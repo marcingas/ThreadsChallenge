@@ -25,10 +25,12 @@ public class BankAccount extends ReentrantLock {
     }
 
     public void deposit(double amount) {
+         boolean status = false;
         try {
             if (lock.tryLock(1000, TimeUnit.MILLISECONDS)) {
                 try {
                     balance += amount;
+                    status= true;
                 } finally {
                     lock.unlock();
                 }
@@ -37,14 +39,17 @@ public class BankAccount extends ReentrantLock {
             }
         } catch (InterruptedException ie) {
         }
+        System.out.println("Deposit transaction status = " + status);
     }
 
     //alternative way if there is more code
     public void withdraw(double amount) {
+        boolean status = false;
         try {
             if (lock.tryLock(1000, TimeUnit.MILLISECONDS)) {
                 try {
                     balance -= amount;
+                    status = true;
                 } finally {
                     lock.unlock();
                 }
@@ -53,6 +58,7 @@ public class BankAccount extends ReentrantLock {
             }
         } catch (InterruptedException ie) {
         }
+        System.out.println("Withdrawal transaction status = " + status);
     }
 
     public void printAccountNumber() {

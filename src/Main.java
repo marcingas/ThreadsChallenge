@@ -21,6 +21,7 @@ public class Main {
                 System.out.println("balance Thread 2 is " + account.getBalance());
             }
         };
+
         trThread1.start();
         trThread2.start();
     }
