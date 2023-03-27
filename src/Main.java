@@ -21,14 +21,6 @@ public class Main {
                 System.out.println("balance Thread 2 is " + account.getBalance());
             }
         };
-//        another way of creating Thread using runnable:
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                account.deposit(203.75);
-//                account.withdraw(100);
-//            }
-//        }).start();
         trThread1.start();
         trThread2.start();
     }

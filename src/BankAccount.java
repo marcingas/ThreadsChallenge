@@ -1,3 +1,4 @@
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -6,7 +7,6 @@ public class BankAccount extends ReentrantLock {
     private double balance;
     private String accountNumber;
     private Lock lock;
-
 
 
     public String getAccountNumber() {
@@ -25,26 +25,37 @@ public class BankAccount extends ReentrantLock {
     }
 
     public void deposit(double amount) {
-       lock.lock();
         try {
-            balance += amount;
-        } finally {
-            lock.unlock();
+            if (lock.tryLock(1000, TimeUnit.MILLISECONDS)) {
+                try {
+                    balance += amount;
+                } finally {
+                    lock.unlock();
+                }
+            } else {
+                System.out.println("Could not get lock ");
+            }
+        } catch (InterruptedException ie) {
         }
-
-
-
     }
-//alternative way if there is more code
+
+    //alternative way if there is more code
     public void withdraw(double amount) {
-        try{
-            balance -= amount;
-        }finally {
-            lock.unlock();
+        try {
+            if (lock.tryLock(1000, TimeUnit.MILLISECONDS)) {
+                try {
+                    balance -= amount;
+                } finally {
+                    lock.unlock();
+                }
+            } else {
+                System.out.println("Could not get lock ");
+            }
+        } catch (InterruptedException ie) {
         }
-
     }
-    public void printAccountNumber(){
+
+    public void printAccountNumber() {
         System.out.println("Account nr = " + accountNumber);
     }
 }
