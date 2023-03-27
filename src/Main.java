@@ -1,7 +1,9 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Main {
     public static void main(String[] args) {
 
-        final BankAccount account = new BankAccount("12345-678", 1000);
+        BankAccount account = new BankAccount("1234-567",1000);
         System.out.println("Balance before Threads is: " + account.getBalance());
         Thread trThread1 = new Thread() {
             @Override
